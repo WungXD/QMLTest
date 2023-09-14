@@ -1,7 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
-
+import "compontents"
 Window {
     id:root
     width: 640
@@ -9,21 +9,24 @@ Window {
     visible: true
     title: qsTr("Hello World")
     property variant colorArray: ["#00bde3", "#67c111", "#ea7025"]
+    //文字
     Text {
         x:30
         y:100
-        width: 300
+        width: 200
         id: name
         text: qsTr("a very long text come baby")
         elide: Text.ElideRight
         style: Text.Outline
         styleColor: "blue"
         color: "yellow"
-        font.pixelSize: 30
+        font.pixelSize: 20
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
 
     }
+
+    //简单的动画
     Image {
         id: image1
         y: 200
@@ -38,103 +41,79 @@ Window {
             height: parent.height
             onClicked: image1.x += 1
         }
+        NumberAnimation on x{
+            from : 20
+            to: 200
+            duration: 2000
+            loops: Animation.Infinite
+        }
+        RotationAnimation on rotation {
+            from : 0
+            to: 360
+            duration: 20
+            loops: Animation.Infinite
+        }
+        PropertyAnimation on scale {
+                from : 1
+                to :0.1
+                duration: 2000
+                loops: Animation.Infinite
+            }
+
+        PropertyAnimation on opacity {
+                from :1
+                to :0
+                duration: 2000
+                loops: Animation.Infinite
+            }
     }
+
+    //gif
      AnimatedImage {
         id: image2
-        y: 400
+        y: 320
         x : 30
-
-        source: "res/go-goal.gif"
+        width : 100
+        height: 100
+        source: "res/loading.gif"
+        cache: true
+        Text {
+            id: imageText
+            width : 50
+            height: 30
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            text: qsTr("text")
+            font.pixelSize: 20
+        }
     }
-
-     Button
+    //自定义button
+     RichButton
      {
-        id: mybutton
+        id: richbutton
         text: "button"
         checkable: true
         x : 10
         width : 300
         height: 50
-        BorderImage {
-            id: borderImg
-            anchors.fill: parent;
-            source: "res/18.png"
-            border.left: 5
-            border.top: 5
-            border.right: 5
-            border.bottom: 5
-        }
-        contentItem: Text {
-           /* id: centText
-            text: mybutton.text
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
-            color: mybutton.down ? "#00008B" : "#4682B4"*/
-            id: txt
-            width : 30
-            x:  (mybutton.width - txt.width)/ 2
-            y:  (mybutton.height - txt.height) / 2
-
-            text: mybutton.down ? "pressed" : mybutton.hovered ? "hover" : mybutton.checked ? "checked" : "unchecked"
-            color: "red"
-            font.pixelSize: 14
-            font.bold: true
-            horizontalAlignment: Text.Center
-            verticalAlignment: Text.AlignVCenter
-        }
-        background: Rectangle{
-            radius: 4
-            //implicitWidth: 10
-            //implicitHeight: 40
-
-            border.color: "#000000"
-
-            color: mybutton.down ? "#d0d0d0" : mybutton.hovered ? "#9933FA" : mybutton.checked ? "#DA70D6" : "#DDA0DD"
-            //设置只有一边圆角 右边画一个矩形遮盖
-            Rectangle{
-                id: rightRect
-                anchors.right: parent.right
-                width: 10
-                height: parent.height
-                border.color: "#000000"
-                color: parent.color
-                //有boder 就再画个矩形遮盖
-                Rectangle{
-                    width: 2
-                    y :1
-                    height: parent.height -2
-                    anchors.left: parent.left
-                    color: parent.color
-                }
-            }
-           /* Text {
-                id: txt1
-                width : 30
-                x:  (mybutton.width - txt.width)/ 2
-                y:  (mybutton.height - txt.height) / 2
-
-                text: mybutton.down ? "pressed" : mybutton.hovered ? "hover" : mybutton.checked ? "checked" : "unchecked"
-                color: "red"
-                font.pixelSize: 14
-                font.bold: true
-                horizontalAlignment: Text.Center
-                verticalAlignment: Text.AlignVCenter
-
-            }*/
-        }
         onToggled :{
-            if(mybutton.checked)
+            if(richbutton.checked)
             {
-                image2.rotation += 90
-                image2.scale = 2.0
+                image1.rotation += 90
+                image1.scale = 1
+               // image2.x += 10;
             }
             else
             {
-                image2.rotation -= 90
-                image2.scale = 1.0
+                //image2.x -= 10;
+                image1.rotation -= 90
+                image1.scale = 1
             }
         }
      }
+    //椭圆button
      RoundButton
      {
          x : 400
@@ -143,6 +122,7 @@ Window {
          height: 50
          text: "roundbutton"
      }
+      //网格布局
      Grid{
         x: 10
         y: 500
@@ -163,6 +143,31 @@ Window {
                 }
             }
 
+        }
+
+     }
+    //密码框
+     TextField{
+        placeholderText: qsTr("Enter password")
+        placeholderTextColor : "#F5F5F5"
+        x: 500
+        y: 30
+        width: 120
+        height: 30
+        color : "red"
+        echoMode: TextInput.Password
+        passwordCharacter: qsTr("*")
+        background:Rectangle {
+            color: "#DCDCDC"
+            //radius: 6
+            //border.color: "#000000"
+            Rectangle {
+                anchors.bottom: parent.bottom
+                height: 1
+                width: parent.width
+                anchors.left: parent.anchors.left
+                color: "#000000"
+            }
         }
 
      }

@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
+    //QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);//AA_UseSoftwareOpenGL AA_UseOpenGLES
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)
