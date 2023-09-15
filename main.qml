@@ -26,47 +26,7 @@ Window {
 
     }
 
-    //简单的动画
-    Image {
-        id: image1
-        y: 200
-        x : 30
-        source: "https://www.baidu.com/img/flexible/logo/pc/result@2.png"
-        sourceSize.width: 200
-        sourceSize.height: 100
-        MouseArea
-        {
-            id: area
-            width: parent.width
-            height: parent.height
-            onClicked: image1.x += 1
-        }
-        NumberAnimation on x{
-            from : 20
-            to: 200
-            duration: 2000
-            loops: Animation.Infinite
-        }
-        RotationAnimation on rotation {
-            from : 0
-            to: 360
-            duration: 20
-            loops: Animation.Infinite
-        }
-        PropertyAnimation on scale {
-                from : 1
-                to :0.1
-                duration: 2000
-                loops: Animation.Infinite
-            }
 
-        PropertyAnimation on opacity {
-                from :1
-                to :0
-                duration: 2000
-                loops: Animation.Infinite
-            }
-    }
 
     //gif
      AnimatedImage {
@@ -171,4 +131,130 @@ Window {
         }
 
      }
+     //简单的动画
+     Image {
+         id: image1
+         y: 200
+         x : 30
+         source: "https://www.baidu.com/img/flexible/logo/pc/result@2.png"
+         sourceSize.width: 200
+         sourceSize.height: 100
+         MouseArea
+         {
+             id: area
+             width: parent.width
+             height: parent.height
+             onClicked: image1.x += 1
+         }
+         NumberAnimation on x{
+             from : 20
+             to: 200
+             duration: 2000
+             loops: Animation.Infinite
+         }
+         RotationAnimation on rotation {
+             from : 0
+             to: 360
+             duration: 20
+             loops: Animation.Infinite
+         }
+         PropertyAnimation on scale {
+                 from : 1
+                 to :0.1
+                 duration: 2000
+                 loops: Animation.Infinite
+             }
+
+         PropertyAnimation on opacity {
+                 from :1
+                 to :0
+                 duration: 2000
+                 loops: Animation.Infinite
+             }
+     }
+     //应用动画
+     RichImage{
+        id : richImg
+        x: 300
+        y: 300
+        source: "res/red_arrow.png"
+        text: "1111"
+
+        /*
+        //方案一 通过点击进行移动
+        Behavior on y{
+               NumberAnimation{ duration: 100}
+        }
+        onClicked: y = 40+Math.random()*(205-40)
+        */
+        //方案二 从外界控制不同的动画属性
+        onClicked:parAn.start()//seqAn.start()//  // numAn.start
+        NumberAnimation {
+            id: numAn
+            target: richImg
+            property: "y"
+            duration: 2000
+            //缓和曲线
+            easing.type: Easing.OutElastic//Easing.InOutBounce//Easing.InElastic//Easing.Linear//Easing.InOutQuad//
+            from: 300
+            to: 100
+        }
+        //并行
+        ParallelAnimation {
+            id: parAn
+            NumberAnimation {
+            target: richImg
+            properties: "y"
+            from: 300
+            to: 100
+            duration: 1000
+            //easing.type: Easing.InOutBounce
+            }
+            NumberAnimation {
+            target: richImg
+            properties: "x"
+            from : 300
+            to: 400
+            //easing.type: Easing.InOutQuad
+            duration: 1000
+            }
+            RotationAnimation {
+                target: richImg
+                properties: "rotation"
+                from : 0
+                to: 720
+                duration: 1000
+            }
+
+        }
+        SequentialAnimation
+        {
+            id: seqAn
+            NumberAnimation {
+            target: richImg
+            properties: "y"
+            from: 300
+            to: 100
+            duration: 1000
+            //easing.type: Easing.InOutBounce
+            }
+            NumberAnimation {
+            target: richImg
+            properties: "x"
+            from : 300
+            to: 400
+            //easing.type: Easing.InOutQuad
+            duration: 1000
+            }
+        }
+     }
+
+     //状态位 与 过度(红绿灯)
+     RgbLight{
+        id: rgblight
+        x: 340
+        width: 50
+        height: 100
+     }
+
 }

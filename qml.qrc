@@ -4,5 +4,8 @@
         <file>res/18.png</file>
         <file>compontents/RichButton.qml</file>
         <file>res/loading.gif</file>
+        <file>res/red_arrow.png</file>
+        <file>compontents/RichImage.qml</file>
+        <file>compontents/RgbLight.qml</file>
     </qresource>
 </RCC>
