@@ -1,4 +1,4 @@
-import QtQuick 2.15
+﻿import QtQuick 2.15
 
 Item {
     id: root
@@ -42,6 +42,7 @@ Item {
             }
         }
     ]
+    //stop 状态到 go状态的过度效果
     transitions: [
         Transition {
         from: "stop";
@@ -49,12 +50,12 @@ Item {
 
         ColorAnimation {
            target:redLight
-           properties: "color"
+           //properties: "color"
             duration: 500
         }
         ColorAnimation {
            target:greenLight
-           properties: "color"
+           //properties: "color"
             duration: 500
         }
         }

@@ -1,4 +1,4 @@
-import QtQuick 2.15
+﻿import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Button
@@ -8,7 +8,7 @@ Button
    BorderImage {
        id: borderImg
        anchors.fill: parent;
-       source: "res/18.png"
+       source: "qrc:res/18.png"
        border.left: 5
        border.top: 5
        border.right: 5

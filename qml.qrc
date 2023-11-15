@@ -7,5 +7,9 @@
         <file>res/red_arrow.png</file>
         <file>compontents/RichImage.qml</file>
         <file>compontents/RgbLight.qml</file>
+        <file>compontents/ExpandedView.qml</file>
+        <file>res/earth.jpg</file>
+        <file>res/mercury.jpg</file>
+        <file>compontents/ListPathView.qml</file>
     </qresource>
 </RCC>

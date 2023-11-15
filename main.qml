@@ -1,10 +1,12 @@
-import QtQuick 2.15
+﻿import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
+import QtGraphicalEffects 1.15
+
 import "compontents"
 Window {
     id:root
-    width: 640
+    width: 1000
     height:800
     visible: true
     title: qsTr("Hello World")
@@ -73,6 +75,8 @@ Window {
             }
         }
      }
+
+
     //椭圆button
      RoundButton
      {
@@ -81,6 +85,10 @@ Window {
          width: 50
          height: 50
          text: "roundbutton"
+         onClicked:
+         {
+
+         }
      }
       //网格布局
      Grid{
@@ -125,7 +133,7 @@ Window {
                 anchors.bottom: parent.bottom
                 height: 1
                 width: parent.width
-                anchors.left: parent.anchors.left
+                anchors.left: parent.left
                 color: "#000000"
             }
         }
@@ -173,6 +181,33 @@ Window {
              }
      }
      //应用动画
+     Rectangle{
+         id: image22
+         color: "black"
+         anchors.right: parent.right
+         anchors.top: parent.top
+         anchors.rightMargin:  2
+         anchors.topMargin: 2
+
+         width: 90
+         height: 90
+         //x : 400
+        // y: 300
+
+         Image {
+             id: img
+             anchors.fill: parent
+             fillMode: Image.PreserveAspectFit
+             source: "res/earth.jpg"
+
+         }
+         ColorOverlay{
+           anchors.fill: img
+           source: img
+           color: "#80700000"
+
+         }
+     }
      RichImage{
         id : richImg
         x: 300
@@ -257,4 +292,194 @@ Window {
         height: 100
      }
 
+    //model view============================================
+     //静态
+     Column{
+        spacing: 2
+        x: 300
+        y: 500
+        Repeater{
+            model:ListModel
+            {
+                ListElement{name: "lilei"; bcolor :"red"}
+                ListElement{name: "hanmeimei"; bcolor :"blue"}
+                ListElement{name: "david"; bcolor: "yellow"}
+            }
+
+            Rectangle{
+                width: 100
+                height: 20
+                radius: 3
+                color : bcolor
+                Text{
+                    anchors.centerIn: parent
+                    text: name
+                }
+
+            }
+
+        }
+     }
+     //动态
+
+     Component {
+         id: highlight
+         Rectangle {
+             width: 40; height: 40
+             color: "#80b0c4de"; radius: 5
+             y: list.currentItem.y
+             z:2
+
+            /* Behavior on y {
+                            SequentialAnimation {
+                                PropertyAnimation { target: highlightRectangle; property: "opacity"; to: 0; duration: 200 }
+                                NumberAnimation { duration: 1 }
+                                PropertyAnimation { target: highlightRectangle; property: "opacity"; to: 1; duration: 200 }
+                            }
+                        }
+             Rectangle {
+                             id: highlightRectangle
+                             anchors.fill: parent
+                             color: "lightGreen"
+                         }
+*/
+             Behavior on y {
+                 SpringAnimation {
+                     spring: 3
+                     damping: 0.2
+                 }
+             }
+         }
+     }
+
+     ListView {
+         id: list
+         width: 180; height: 200
+         x: 460
+         y: 500
+        //添加背景色
+         Rectangle {
+                 color: "lightblue"
+                 anchors.fill: parent
+                 z: -1
+             }
+         model: 5
+        /* model:  ListModel {
+             ListElement {
+                 name: "Bill Smith"
+                 number: "555 3264"
+             }
+             ListElement {
+                 name: "John Brown"
+                 number: "555 8426"
+             }
+             ListElement {
+                 name: "Sam Wise"
+                 number: "555 0473"
+             }
+         }*/
+         clip: true
+         delegate: numberDelegate
+         spacing: 5
+         highlight: highlight
+         //highlightFollowsCurrentItem: ture
+         focus: true
+         header: headComp
+
+     }
+     Component{
+            id: headComp
+            Rectangle
+            {
+                width: 40
+                height: 20
+                color: "yellow"
+
+                Text {
+                    id: headText
+                    text: qsTr("head")
+                    anchors.centerIn: parent
+                }
+            }
+     }
+     Component {
+             id: numberDelegate
+
+             Rectangle {
+                 width: 40
+                 height: 40
+                 property bool isCurItem: ListView.isCurrentItem
+                 property bool isHover : false
+                 //property alias textColor: text.color
+                 color: ListView.isCurrentItem  ? "red" :isHover ? "red" : "lightGreen"
+
+                 Text {
+                     id: text
+                     anchors.centerIn: parent
+
+                     font.pixelSize: 14
+                     font.bold: true
+                     color:  isCurItem ? "black" : "white"
+                     text: index
+                 }
+                 //list hover selected color
+                 MouseArea
+                 {
+                     id:mouse
+                     anchors.fill: parent
+                     hoverEnabled: true
+                     onEntered:{
+                                isHover = true
+                     }
+                     onExited:{
+                               isHover = false
+                     }
+                     onClicked:
+                     {
+                           list.currentIndex = index
+                     }
+                 }
+             }
+         }
+
+     ExpandedView{
+         x: 400
+         y: 200
+
+     }
+    //path view ==============================
+     ListPathView{
+        x: 700
+        y: 200
+        width: 80
+        height: 300
+
+     }
+    //liveview 结合section可以达到分段的目的 通过设置section.property: 进行分组
+     //...
+
+     //canvas
+     Canvas{
+        x: 700
+        width :200
+        height: 150
+
+        onPaint:
+        {
+            var ctx = getContext("2d")
+            ctx.fillStyle = "lightGray"
+            ctx.fillRect(0,0,200,200)
+            // setup the stroke
+            ctx.strokeStyle = "red"
+            // create a path
+            ctx.beginPath()
+            ctx.moveTo(50,50)
+            ctx.lineTo(150,50)
+            // stroke path
+            ctx.stroke()
+
+            ctx.fillStyle = "red"
+            ctx.fillRect(150,50,40,40)
+        }
+     }
 }
